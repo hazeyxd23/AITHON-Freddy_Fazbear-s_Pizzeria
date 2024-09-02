@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="https://cdn-icons-png.flaticon.com/512/2178/2178616.png"
+      type="image/x-icon"
+    />
+    <meta name="msapplication-TileImage" content="favicon.ico" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <title>CryptoPrice</title>
+    <style>
+        /* Add button styling with darker colors */
+        .link-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            background-color: #206b6a; /* Darker teal */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            text-align: center;
+            transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        .link-button:hover {
+            background-color: #004d40; /* Even darker teal for hover effect */
+        }
+
+        /* Adjust icon-button styles if needed */
+        .icon-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .icon-button img {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container" class="container">
+        <h1 class="heading" id="heading">Crypto Price</h1>
+
+        <div class="price-container" id="price-container">
+            <div class="price">
+                <a href="btc.html" class="link-button">
+                    <img src="https://cdn-icons-png.flaticon.com/512/1490/1490849.png" alt="Bitcoin Logo" />
+                    <p>BTC/USD</p>
+                </a>
+                <p class="bitcoin" id="bitcoin">Loading...</p>
+            </div>
+            <div class="price">
+                <a href="eth.html" class="link-button">
+                    <img src="https://cdn-icons-png.flaticon.com/512/6001/6001562.png" alt="Ethereum Logo" />
+                    <p>ETH/USD</p>
+                </a>
+                <p class="ethereum" id="ethereum">Loading...</p>
+            </div>
+            <div class="price">
+                <a href="ada.html" class="link-button">
+                    <img src="https://cdn-icons-png.flaticon.com/512/7016/7016514.png" alt="Cardano Logo" />
+                    <p>ADA/USD</p>
+                </a>
+                <p class="cardano" id="cardano">Loading...</p>
+            </div>
+        </div>
+
+        <button class="btn" id="btn">Refresh Prices</button>
+        <p class="error" id="error">Prices Normally Update Every Minute.</p>
+        <p class="error" style="margin-top: -12px">Please Don't Click Repeatedly.</p>
+    </div>
+
+    <script src="main.js" type="text/javascript"></script>
+</body>
+</html>

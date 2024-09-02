@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardano Price Chart</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+            max-width: 1200px; /* Limit maximum width */
+        }
+        .container {
+            width: 90%;
+            height: 90%;
+            max-width: 1200px;
+            max-height: 600px;
+        }
+    </style>
+    <!-- Include Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <canvas id="priceChart"></canvas>
+    </div>
+
+    <script>
+        // Function to fetch Cardano price data for the past 24 hours
+        async function fetchCardanoPrices() {
+            const url = 'https://api.coingecko.com/api/v3/coins/cardano/market_chart?vs_currency=usd&days=1';
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.prices;
+        }
+
+        // Function to format the data for Chart.js
+        function formatChartData(prices) {
+            const labels = prices.map(([timestamp]) => {
+                const date = new Date(timestamp);
+                return `${date.getHours()}:00`; // Format hours for display
+            });
+            const data = prices.map(([, price]) => price);
+            return { labels, data };
+        }
+
+        // Initialize Chart.js once the data is fetched
+        async function initializeChart() {
+            const prices = await fetchCardanoPrices();
+            const { labels, data } = formatChartData(prices);
+
+            const ctx = document.getElementById('priceChart').getContext('2d');
+            const priceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cardano Price (USD)',
+                        data: data,
+                        borderColor: 'rgba(255, 99, 132, 1)', // Color for Cardano
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)', // Background color
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: false,
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                autoSkip: true,
+                                maxTicksLimit: 24
+                            }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            // Adjust min and max values based on Cardano's price range
+                            min: 0.3, 
+                            max: 0.35, 
+                            ticks: {
+                                callback: function(value) {
+                                    return `$${value.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `$${tooltipItem.raw.toFixed(2)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize the chart when the page loads
+        window.onload = initializeChart;
+    </script>
+</body>
+</html>
